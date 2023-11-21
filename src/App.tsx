@@ -1,6 +1,17 @@
-import { OpenFeatureProvider, useFeatureFlag } from "@openfeature/react-sdk";
+import { InMemoryProvider, OpenFeature, OpenFeatureProvider, useFeatureFlag } from "@openfeature/react-sdk";
 import "./App.css";
 import logo from "./logo.svg";
+
+OpenFeature.setProvider(new InMemoryProvider({
+  'new-message': {
+    disabled: false,
+    variants: {
+      'on': true,
+      'off': false,
+    },
+    defaultVariant: 'on'
+  },
+}));
 
 function App() {
   return (
@@ -11,7 +22,7 @@ function App() {
 }
 
 function Page() {
-  const { value: showNewMessage } = useFeatureFlag("thing", true);
+  const { value: showNewMessage } = useFeatureFlag("new-message", true);
   return (
     <div className="App">
       <header className="App-header">
