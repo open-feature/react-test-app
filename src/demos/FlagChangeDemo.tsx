@@ -2,21 +2,26 @@ import {
   InMemoryProvider,
   OpenFeature,
   OpenFeatureProvider,
-  useBooleanFlagDetails
-} from '@openfeature/react-sdk';
-import { useEffect } from 'react';
-import { FLAG_CHANGE_DEMO_NAME } from '../constants';
-import logo from '../logo.svg';
-import './Demo.css';
+  useBooleanFlagDetails,
+} from "@openfeature/react-sdk";
+import { useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
+import {
+  FLAG_CHANGE_DEMO_EXPLANATION,
+  FLAG_CHANGE_DEMO_NAME
+} from "../constants";
+import logo from "../logo.svg";
+import "./Demo.css";
 
 const PROVIDER_NAME = FLAG_CHANGE_DEMO_NAME;
-const newMessageName = 'new-message';
+const newMessageName = "new-message";
 
 /**
- * A component associated with a provider whose flags change every 2 seconds.
+ * This component is associated with a provider whose flags change every 2 seconds.
  * It demonstrates the React SDKs ability to dynamically react to flag changes from the provider.
  */
 function FlagChangeDemo() {
+  const [searchParams] = useSearchParams();
 
   const flagConfig = {
     [newMessageName]: {
@@ -25,28 +30,29 @@ function FlagChangeDemo() {
         on: true,
         off: false,
       },
-      defaultVariant: 'on',
+      defaultVariant: "off",
     },
   };
-  const provider = new InMemoryProvider();
+  const provider = new InMemoryProvider(flagConfig);
 
-  // Set our provider, give it a name matching the scope of our OpenFeatureProvider below
+  // set our provider, give it a name matching the scope of our OpenFeatureProvider below
   OpenFeature.setProvider(PROVIDER_NAME, provider);
 
-  // Start an interval to change the flag vales every 2s.
+  // start an interval to change the flag vales every 2s for demo purposes
   const interval = window.setInterval(() => {
-    flagConfig[newMessageName].defaultVariant = flagConfig[newMessageName].defaultVariant === 'on' ? 'off' : 'on';
+    flagConfig[newMessageName].defaultVariant =
+      flagConfig[newMessageName].defaultVariant === "on" ? "off" : "on";
     provider.putConfiguration(flagConfig);
-  }, 2000);
+  }, Number.parseInt(searchParams.get("delay") || "2000"));
 
   useEffect(() => {
     return () => {
       window.clearInterval(interval);
-    }
+    };
   });
 
   return (
-    // This page is scoped to the "flag-change" provider.
+    // this page is scoped to the "flag-change" provider.
     <OpenFeatureProvider domain={PROVIDER_NAME}>
       <Content />
     </OpenFeatureProvider>
@@ -55,26 +61,29 @@ function FlagChangeDemo() {
 
 function Content() {
   return (
-    <div className='Demo'>
-      <header className='Demo-header'>
-        <img src={logo} className='Demo-logo' alt='logo' />
-          {/* The Message component evaluates a feature flag.
-          The component markup will be update dynamically when the provider emits a flag-change event. */}
-          <Message />
+    <div className="Demo">
+      <header className="Demo-header">
+        <p className="Demo-description small-text bounded-text">{FLAG_CHANGE_DEMO_EXPLANATION}</p>
+        <Spinner />
       </header>
     </div>
   );
 }
 
-function Message() {
+function Spinner() {
   const { value: showNewMessage } = useBooleanFlagDetails(newMessageName, true);
 
   return (
     <>
+      <img
+        src={logo}
+        className={showNewMessage ? "Demo-logo Demo-spin" : "Demo-logo"}
+        alt="logo"
+      />
       {showNewMessage ? (
-        <p>Welcome to this new, exciting React app!</p>
+        <p>Welcome to this OpenFeature-enabled React app!</p>
       ) : (
-        <p>Welcome to this boring React app.</p>
+        <p>Welcome to this React app.</p>
       )}
     </>
   );

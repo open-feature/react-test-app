@@ -1,24 +1,58 @@
-import { createRoot } from 'react-dom/client';
-import { Link, RouterProvider, createBrowserRouter } from 'react-router-dom';
-import FlagChangeDemo from './demos/FlagChangeDemo';
-import SuspenseDemo from './demos/SuspenseDemo';
-import './index.css';
-import reportWebVitals from './reportWebVitals';
-import { CONTEXT_CHANGE_DEMO_NAME, FLAG_CHANGE_DEMO_NAME, SUSPENSE_DEMO_NAME } from './constants';
-import ContextChangeDemo from './demos/ContextChangeDemo';
-
+import { createRoot } from "react-dom/client";
+import { Link, RouterProvider, createBrowserRouter } from "react-router-dom";
+import FlagChangeDemo from "./demos/FlagChangeDemo";
+import SuspenseDemo from "./demos/SuspenseDemo";
+import "./index.css";
+import reportWebVitals from "./reportWebVitals";
+import {
+  CONTEXT_CHANGE_DEMO_NAME,
+  CONTEXT_CHANGE_DEMO_DESCRIPTION,
+  FLAG_CHANGE_DEMO_NAME,
+  FLAG_CHANGE_DEMO_DESCRIPTION,
+  SUSPENSE_DEMO_NAME,
+  SUSPENSE_DEMO_DESCRIPTION,
+} from "./constants";
+import ContextChangeDemo from "./demos/ContextChangeDemo";
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: "/",
     element: (
-      <div className='menu'><h1>React Demos</h1>
-      <nav>
-        <Link title='Demo for suspending until the provider is ready.' to={SUSPENSE_DEMO_NAME}>Suspense</Link>
-        <Link title='Demo for automatic updates when flag values change' to={FLAG_CHANGE_DEMO_NAME}>Flag change</Link>
-        <Link title='Demo for re-render when context changes' to={CONTEXT_CHANGE_DEMO_NAME}>Context change</Link>
-      </nav></div>
-      
+      <div className="menu">
+        <h1>React Demos</h1>
+        <p className="small-text bounded-text">
+          The{" "}
+          <a href="https://www.npmjs.com/package/@openfeature/react-sdk">
+            @openfeature/react-sdk
+          </a>{" "}
+          is built on the{" "}
+          <a href="https://www.npmjs.com/package/@openfeature/web-sdk">
+            @openfeature/web-sdk
+          </a>
+          , and adds additional react-specific APIs and features. The{" "}
+          <a href="https://openfeature.dev/specification/sections/flag-evaluation">
+            evaluation API
+          </a>{" "}
+          is exposed through the "useFlag" hooks. The hooks automatically
+          re-render when flags change, and feature optional{" "}
+          <a href="https://react.dev/reference/react/Suspense">suspense</a>
+          -support while flags are not ready to be evaluated.
+        </p>
+        <nav>
+          <Link title={SUSPENSE_DEMO_DESCRIPTION} to={SUSPENSE_DEMO_NAME}>
+            Suspense<div>{SUSPENSE_DEMO_DESCRIPTION}</div>
+          </Link>
+          <Link title={FLAG_CHANGE_DEMO_DESCRIPTION} to={FLAG_CHANGE_DEMO_NAME}>
+            Flag change<div>{FLAG_CHANGE_DEMO_DESCRIPTION}</div>
+          </Link>
+          <Link
+            title={CONTEXT_CHANGE_DEMO_DESCRIPTION}
+            to={CONTEXT_CHANGE_DEMO_NAME}
+          >
+            Context change <div>{CONTEXT_CHANGE_DEMO_DESCRIPTION}</div>
+          </Link>
+        </nav>
+      </div>
     ),
   },
   {
@@ -35,7 +69,7 @@ const router = createBrowserRouter([
   },
 ]);
 
-createRoot(document.getElementById('root')!).render(
+createRoot(document.getElementById("root")!).render(
   <RouterProvider router={router} />
 );
 
