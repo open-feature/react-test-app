@@ -47,7 +47,7 @@ function FlagChangeDemo() {
 
   return (
     // This page is scoped to the "flag-change" provider.
-    <OpenFeatureProvider clientName={PROVIDER_NAME}>
+    <OpenFeatureProvider domain={PROVIDER_NAME}>
       <Content />
     </OpenFeatureProvider>
   );
