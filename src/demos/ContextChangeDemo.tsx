@@ -3,9 +3,16 @@ import {
   InMemoryProvider,
   OpenFeature,
   OpenFeatureProvider,
+  ProviderEvents,
   useBooleanFlagDetails
 } from "@openfeature/react-sdk";
-import { CONTEXT_CHANGE_DEMO_NAME } from "../constants";
+import { Suspense } from "react";
+import { useSearchParams } from "react-router-dom";
+import {
+  CONTEXT_CHANGE_DEMO_EXPLANATION,
+  CONTEXT_CHANGE_DEMO_NAME,
+} from "../constants";
+import hourglass from "../hourglass.svg";
 import logo from "../logo.svg";
 import "./Demo.css";
 
@@ -16,6 +23,8 @@ const PROVIDER_NAME = CONTEXT_CHANGE_DEMO_NAME;
  * It demonstrates the "Suspense" support of the React SDK.
  */
 function ContextChangeDemo() {
+  const [searchParams] = useSearchParams();
+
   const goFastName = "go-fast";
   const flagConfig = {
     [goFastName]: {
@@ -27,14 +36,17 @@ function ContextChangeDemo() {
       defaultVariant: "on",
       contextEvaluator: (context: EvaluationContext) => {
         if (context.silly) {
-          return 'on';
+          return "on";
         }
-        return 'off'
-      }
+        return "off";
+      },
     },
   };
 
-  const provider = new InMemoryProvider(flagConfig) ;
+  const provider = new DelayedContextUpdateProvider(
+    flagConfig,
+    Number.parseInt(searchParams.get("delay") || "0")
+  );
 
   // Set our provider, give it a name matching the scope of our OpenFeatureProvider below
   OpenFeature.setProvider(PROVIDER_NAME, provider);
@@ -51,8 +63,11 @@ function Content() {
   return (
     <div className="Demo">
       <header className="Demo-header">
-        <ContextChangeButton/>
-        <Spinner />
+        <p className="Demo-description small-text bounded-text">{CONTEXT_CHANGE_DEMO_EXPLANATION}</p>
+        <ContextChangeButton />
+        <Suspense fallback={<Fallback />}>
+          <Spinner />
+        </Suspense>
       </header>
     </div>
   );
@@ -62,24 +77,33 @@ function ContextChangeButton() {
   return (
     <span>
       <span>Click </span>
-      <button onClick={() => {
-        OpenFeature.setContext(PROVIDER_NAME, { silly: !OpenFeature.getContext(PROVIDER_NAME).silly })
-      }}>here</button>
+      <button
+        onClick={() => {
+          OpenFeature.setContext(PROVIDER_NAME, {
+            silly: !OpenFeature.getContext(PROVIDER_NAME).silly,
+          });
+        }}
+      >
+        here
+      </button>
       <span> to modify the evaluation context</span>
     </span>
   );
 }
 
 function Spinner() {
-  const { value: goFast } = useBooleanFlagDetails("go-fast", true);
+  const { value: goFast } = useBooleanFlagDetails("go-fast", true, {
+    suspendWhileReconciling: true,
+  });
 
   return (
     <>
       <img
         src={logo}
-        className="Demo-logo"
+        className="Demo-logo Demo-spin"
         style={{
-          animation: goFast ? "Demo-logo-spin infinite 1s linear" : "",
+          padding: 20,
+          animation: goFast ? "spin infinite 1s linear" : "",
         }}
         alt="logo"
       />
@@ -88,6 +112,36 @@ function Spinner() {
       ) : (
         <p>Welcome to this React app.</p>
       )}
+    </>
+  );
+}
+
+/**
+ * A provider who's onContextChange is delayed for 'delay' seconds to demonstrate the React SDK's Suspense features.
+ */
+class DelayedContextUpdateProvider extends InMemoryProvider {
+  constructor(
+    flagConfiguration: ConstructorParameters<typeof InMemoryProvider>[0],
+    private delay: number
+  ) {
+    super(flagConfiguration);
+  }
+
+  // override to artificially delay our context change for demo purposes
+  async onContextChange(
+    oldContext: EvaluationContext,
+    newContext: EvaluationContext
+  ): Promise<void> {
+      await new Promise((resolve) => setTimeout(resolve, this.delay)).then(() => {
+    });
+  }
+}
+
+function Fallback() {
+  return (
+    <>
+      <img src={hourglass} className="Demo-logo Fallback-img" alt="hourglass" />
+      <p>Waiting for provider context-update...</p>
     </>
   );
 }

@@ -1,3 +1,11 @@
+a {
+  color: #ccc
+}
+
+a:visited {
+  color: #999
+}
+
 .Demo {
   text-align: center;
 }
@@ -5,10 +13,6 @@
 .Demo-logo {
   height: 40vmin;
   pointer-events: none;
-}
-
-.Demo-logo {
-  animation: Demo-logo-spin infinite 20s linear;
 }
 
 .Demo-header {
@@ -24,7 +28,16 @@
   color: #61dafb;
 }
 
-@keyframes Demo-logo-spin {
+.Fallback-img {
+  max-height: 300px;
+  padding: 50px;
+}
+
+.Demo-spin {
+  animation: spin infinite 20s linear;
+}
+
+@keyframes spin {
   from {
     transform: rotate(0deg);
   }

@@ -29,12 +29,33 @@ button {
   font-size: calc(10px + 2vmin);
 }
 
+.small-text {
+  font-size: calc(10px + 1vmin);
+}
+
+.bounded-text {
+  margin: 0 25% 50px 25%;
+  text-align: center;
+}
+
 nav {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
+}
+
+nav > a {
+  margin: .5ex 0 .5ex 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+nav > a > div {
+  font-size: calc(5px + 1vmin);
+  text-decoration: none !important;
 }
 
 code {
