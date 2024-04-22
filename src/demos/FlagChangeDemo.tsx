@@ -71,7 +71,8 @@ function Content() {
 }
 
 function Spinner() {
-  const { value: showNewMessage } = useBooleanFlagDetails(newMessageName, true);
+  // evaluate flag with detailed API
+  const { value: showNewMessage } = useBooleanFlagDetails(newMessageName, false);
 
   return (
     <>

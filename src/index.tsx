@@ -39,15 +39,30 @@ const router = createBrowserRouter([
           -support while flags are not ready to be evaluated.
         </p>
         <nav>
-          <Link title={SUSPENSE_DEMO_DESCRIPTION} to={SUSPENSE_DEMO_NAME}>
+          <Link
+            title={SUSPENSE_DEMO_DESCRIPTION}
+            to={{
+              pathname: SUSPENSE_DEMO_NAME,
+              search: "delay=2000",
+            }}
+          >
             Suspense<div>{SUSPENSE_DEMO_DESCRIPTION}</div>
           </Link>
-          <Link title={FLAG_CHANGE_DEMO_DESCRIPTION} to={FLAG_CHANGE_DEMO_NAME}>
+          <Link
+            title={FLAG_CHANGE_DEMO_DESCRIPTION}
+            to={{
+              pathname: FLAG_CHANGE_DEMO_NAME,
+              search: "delay=1000",
+            }}
+          >
             Flag change<div>{FLAG_CHANGE_DEMO_DESCRIPTION}</div>
           </Link>
           <Link
             title={CONTEXT_CHANGE_DEMO_DESCRIPTION}
-            to={CONTEXT_CHANGE_DEMO_NAME}
+            to={{
+              pathname: CONTEXT_CHANGE_DEMO_NAME,
+              search: "delay=0",
+            }}
           >
             Context change <div>{CONTEXT_CHANGE_DEMO_DESCRIPTION}</div>
           </Link>

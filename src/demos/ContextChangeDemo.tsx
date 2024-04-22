@@ -3,8 +3,8 @@ import {
   InMemoryProvider,
   OpenFeature,
   OpenFeatureProvider,
-  ProviderEvents,
-  useBooleanFlagDetails
+  useBooleanFlagDetails,
+  useFlag,
 } from "@openfeature/react-sdk";
 import { Suspense } from "react";
 import { useSearchParams } from "react-router-dom";
@@ -92,9 +92,8 @@ function ContextChangeButton() {
 }
 
 function Spinner() {
-  const { value: goFast } = useBooleanFlagDetails("go-fast", true, {
-    suspendWhileReconciling: true,
-  });
+  // evaluate flag with react-query style API
+  const { value: goFast } = useFlag("go-fast", false);
 
   return (
     <>
