@@ -3,7 +3,7 @@ import {
   InMemoryProvider,
   OpenFeature,
   OpenFeatureProvider,
-  useBooleanFlagValue,
+  useBooleanFlagValue
 } from "@openfeature/react-sdk";
 import { Suspense } from "react";
 import { useSearchParams } from "react-router-dom";
@@ -60,7 +60,8 @@ function Content() {
 }
 
 function Spinner() {
-  const showNewMessage = useBooleanFlagValue("new-message", true);
+  // evaluate flag with basic API
+  const showNewMessage = useBooleanFlagValue("new-message", false);
 
   return (
     <>

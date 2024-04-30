@@ -8,4 +8,4 @@ export const FLAG_CHANGE_DEMO_EXPLANATION = 'When the provider emits an event in
 
 export const CONTEXT_CHANGE_DEMO_NAME = 'context-change';
 export const CONTEXT_CHANGE_DEMO_DESCRIPTION = 'Components update when the context is changed'
-export const CONTEXT_CHANGE_DEMO_EXPLANATION = 'Components after the provider reconciles its state with a context change (usually associated with a user action. If reconciliation is not instantaneous, the component suspends. You can modify the "delay" query param to change reconciliation delay.'
+export const CONTEXT_CHANGE_DEMO_EXPLANATION = 'Components after the provider reconciles its state with a context change (usually associated with a user action). If reconciliation is not instantaneous, the component suspends. You can modify the "delay" query param to change reconciliation delay.'
