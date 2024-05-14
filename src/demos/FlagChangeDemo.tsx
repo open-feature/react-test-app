@@ -53,7 +53,7 @@ function FlagChangeDemo() {
 
   return (
     // this page is scoped to the "flag-change" provider.
-    <OpenFeatureProvider domain={PROVIDER_NAME} suspend={false}>
+    <OpenFeatureProvider domain={PROVIDER_NAME}>
       <Content />
     </OpenFeatureProvider>
   );

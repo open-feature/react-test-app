@@ -40,7 +40,8 @@ function SuspenseDemo() {
 
   return (
     // This page is scoped to the "suspense" provider.
-    <OpenFeatureProvider domain={PROVIDER_NAME}>
+    // Enable suspense for this context (can be overridden in hooks).
+    <OpenFeatureProvider domain={PROVIDER_NAME} suspend={true}>
       <Content />
     </OpenFeatureProvider>
   );
