@@ -53,7 +53,7 @@ function ContextChangeDemo() {
 
   return (
     // This page is scoped to the "suspense" provider.
-    <OpenFeatureProvider domain={PROVIDER_NAME}>
+    <OpenFeatureProvider domain={PROVIDER_NAME} suspend={true}>
       <Content />
     </OpenFeatureProvider>
   );
