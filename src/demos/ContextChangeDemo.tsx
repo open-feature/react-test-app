@@ -5,6 +5,7 @@ import {
   OpenFeatureProvider,
   useBooleanFlagDetails,
   useFlag,
+  useContextMutator,
 } from "@openfeature/react-sdk";
 import { Suspense } from "react";
 import { useSearchParams } from "react-router-dom";
@@ -74,14 +75,18 @@ function Content() {
 }
 
 function ContextChangeButton() {
+  const {
+    mutateContext,
+  } = useContextMutator();
+  
   return (
     <span>
       <span>Click </span>
       <button
         onClick={() => {
-          OpenFeature.setContext(PROVIDER_NAME, {
+          mutateContext(PROVIDER_NAME, {
             silly: !OpenFeature.getContext(PROVIDER_NAME).silly,
-          });
+          })
         }}
       >
         here
