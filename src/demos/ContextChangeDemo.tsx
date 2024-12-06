@@ -86,7 +86,7 @@ function ContextChangeButton() {
         onClick={() => {
           mutateContext(PROVIDER_NAME, {
             silly: !OpenFeature.getContext(PROVIDER_NAME).silly,
-          })
+          });
         }}
       >
         here
