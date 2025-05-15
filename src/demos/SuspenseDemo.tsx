@@ -99,7 +99,6 @@ class DelayedInMemoryProvider extends InMemoryProvider {
   // artificially delay our init (delaying PROVIDER_READY event)
   async initialize(context?: EvaluationContext | undefined): Promise<void> {
     await new Promise((resolve) => setTimeout(resolve, this.delay));
-    return super.initialize(context);
   }
 }
 

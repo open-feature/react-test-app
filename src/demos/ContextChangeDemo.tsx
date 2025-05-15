@@ -3,7 +3,6 @@ import {
   InMemoryProvider,
   OpenFeature,
   OpenFeatureProvider,
-  useBooleanFlagDetails,
   useFlag,
   useContextMutator,
 } from "@openfeature/react-sdk";
@@ -76,7 +75,7 @@ function Content() {
 
 function ContextChangeButton() {
   const {
-    mutateContext,
+    setContext,
   } = useContextMutator();
   
   return (
@@ -84,7 +83,7 @@ function ContextChangeButton() {
       <span>Click </span>
       <button
         onClick={() => {
-          mutateContext(PROVIDER_NAME, {
+          setContext({
             silly: !OpenFeature.getContext(PROVIDER_NAME).silly,
           });
         }}
